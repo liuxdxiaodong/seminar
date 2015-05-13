@@ -1,4 +1,4 @@
-function [Z,E] = inexact_alm_lrr_l21(X,A,lambda,display)
+function [Z] = inexact_alm_lrr_l21(X,A,lambda,display)
 % This routine uses Inexact ALM algorithm to solve the following nuclear-norm optimization problem:
 % min |Z|_*+lambda*|E|_2,1
 % s.t., X = AZ+E

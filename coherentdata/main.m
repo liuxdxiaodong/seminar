@@ -1,21 +1,29 @@
+%addpath I:\back-up\LXD\important\math\post\low-dimension\code\data\dataset_603573\603573\ORL
+%files = dir('orl00*.bmp');
 close all
 clear
 clc
 
-m = 20;
-n = 100;
-X = zeros(m,n);
-n1 = max(m,n);
-n2 = min(m,n);
-r0_hat = 0;
-lambda = 1/sqrt(n1);
-L0_hat = inexact_alm_rpca(X,lambda);
-[U0,S0,V0] = svd(L0_hat);
-for i = 1:n2
-    if S(i,i)>0.001*S(1,1)
-        r0_hat = r0_hat+1;
-    end
+path = 'C:\Users\CGGI_006\Desktop\LXD\data\ORL';
+files = dir(path);
+data = cell(1,20);
+
+for i = 5:24
+    image_name = [path '\' files(i).name];
+    data{i-4} = imread(image_name);
+    D(:,i-4) = double(data{i-4}(:));
 end
-
-
-
+% D = zeros(100,100);
+% for i = 5:10:100
+%     D(:,i) = ones(100,1);
+% end
+% E = imnoise(D,'gaussian');
+L_star = LRDP(D);
+figure,
+for j = 1:20
+    colL = L_star(:,j);
+    matL = reshape(colL,112,92);
+    subplot(5,4,j),imshow(matL);
+end
+%A = uint8(A);
+%A1 = reshape(A,112,92);
