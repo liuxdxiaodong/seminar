@@ -24,6 +24,9 @@ for iter = 1:2
     end
     Z_star = inexact_alm_lrr_l21(X,A_check,lambda);
     L_star = A_check * Z_star;
+    for i = 1:m
+        L_star(i,:) = L_star(i,:) ./ max(L_star(i,:));
+    end
     L0_hhat = L_star;
 end
 end
