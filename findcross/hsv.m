@@ -3,7 +3,7 @@ clear
 clc
 
 I = imread('IMG_4598.JPG');
-figure,imshow(I)
+%figure,imshow(I)
 hsv_image = rgb2hsv(I);
 R = I(:,:,1);
 G = I(:,:,2);
@@ -31,5 +31,22 @@ hsv_dst(:,:,1) = H/255;
 hsv_dst(:,:,2) = V/255;
 hsv_dst(:,:,3) = S/255;
 dst = hsv2rgb(hsv_dst);
-figure, imshow(dst)
-%centre = findcentre(R,G,B,H);
+
+[row,col] = size(R);
+hight = row / 8;
+weight = col / 16;
+m = 1;
+for k = 1:16
+    for s = 1:8
+        figure, imshow(I(((s-1)*hight+1):(s*hight),((k-1)*weight+1):(k*weight),:))
+        [x,y] = ginput();
+        t = length(x);
+        if t == 0
+            continue
+        else
+            testcentre(m:(m+t-1),:) = [x+(s-1)*hight,y+(k-1)*weight];
+        end
+        m = m + t;
+    end
+end
+centre = findcentre(testcentre,H);

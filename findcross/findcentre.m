@@ -1,33 +1,46 @@
-function [ centre ] = findcentre( R,G,B,H )
-k = 1;
-centre = [];
-for i = 1:3744
-    for j = 1:5616
-        if(R(i,j)==255 && G(i,j)==0 && B(i,j)==0)
-            centre(k,:) = circle(i,j,H);
-            k = k+1;
-        end
-        
-    end
+function [ centre ] = findcentre( testcentre,H )
+tic
+[m,n] = size(testcentre);
+centre = zeros(m,n);
+for i= 1:m
+    display(i);
+    centre(i,:) = circle(testcentre(i,:),H);
 end
+toc
 end
 
-function [centrek] = circle(i,j,H)
-radius = 15;
+function [centrek] = circle(point,H)
+i = point(1);
+j = point(2);
+radius = 30;
 anglestep = 20;
 circlepoint = zeros(4,2);
 centrek = zeros(1,2);
+
 for step = 1:4
     theta = (step-1)*pi/2;
-    for angle = 1:anglestep
-        eita = theta + angle / anglestep *pi/2;
-        circlex = i + radius * cos(eita);
-        circley = j + radius * sin(eita);
-        if(H(floor(x),floor(y)) ~= 0)
-            circlepoint(step,1) = floor(circlex);
-            circlepoint(step,2) = floor(circley);
-            continue
+    stop = 0;
+    k = 0;
+    while(stop == 0)
+        angle = k/anglestep * pi/2;
+        eita = theta + angle;
+        circlex = j + radius * cos(eita);
+        circley = i - radius * sin(eita);
+        if(floor(circley) <= 0 || floor(circlex) <= 0)
+            break
         end
+        if(H(floor(circley),floor(circlex)) ~= 0)
+            circlepoint(step,1) = floor(circley);
+            circlepoint(step,2) = floor(circlex);
+            stop = 1;
+        else
+            stop = 0;
+        end
+        if(k == 20 && stop == 0)
+             break
+        end
+        
+        k=k+1;
     end
 end
 cp = circlepoint;
